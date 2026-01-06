@@ -1,0 +1,103 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+env:
+  DEVKITPRO: /opt/devkitpro
+  DEVKITARM: /opt/devkitpro/devkitARM
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkitarm:latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Text Version
+        working-directory: SDCardTester/Text
+        run: |
+          make clean
+          make
+
+      - name: Build GUI Version
+        working-directory: SDCardTester/GUI
+        run: |
+          make clean
+          make
+
+      - name: Prepare release artifacts
+        run: |
+          mkdir -p release
+          cp SDCardTester/Text/output/SDCardTester.bin release/
+          cp SDCardTester/GUI/output/SDCardTester_GUI.bin release/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdcard-tester-binaries
+          path: release/
+          retention-days: 7
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: sdcard-tester-binaries
+          path: release/
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: SD Card Tester ${{ steps.version.outputs.version }}
+          body: |
+            ## SD Card Tester for Nintendo Switch
+
+            A Hekate payload for comprehensive SD card read testing.
+
+            ### Downloads
+            - `SDCardTester.bin` - Text version (lightweight)
+            - `SDCardTester_GUI.bin` - GUI version with LVGL interface
+
+            ### Installation
+            Copy the `.bin` file to `/bootloader/payloads/` on your SD card.
+
+            ### Features
+            - Sequential and butterfly read pattern tests
+            - Latency measurement (min/max/avg)
+            - Bad block and slow block detection
+            - Fast (512MB) and full card test modes
+          files: |
+            release/SDCardTester.bin
+            release/SDCardTester_GUI.bin
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

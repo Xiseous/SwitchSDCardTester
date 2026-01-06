@@ -12,12 +12,12 @@ A Hekate payload that performs comprehensive SD card read testing with sequentia
 
 ## Versions
 
-### Text Version (`Text/`)
+### Text Version (`SDCardTester/Text/`)
 Simple text-based interface using `gfx_printf()` and menu system.
 - Lightweight and fast
 - Based on CommonProblemResolver patterns
 
-### GUI Version (`GUI/`) 
+### GUI Version (`SDCardTester/GUI/`) 
 Full graphical interface using LVGL (LittlevGL).
 - Buttons, progress bars, message boxes
 - Based on Nyx (Hekate's GUI)
@@ -30,14 +30,14 @@ Full graphical interface using LVGL (LittlevGL).
 
 ### Build Text Version
 ```bash
-cd Text
+cd SDCardTester/Text
 make clean && make
 # Output: output/SDCardTester.bin
 ```
 
 ### Build GUI Version
 ```bash
-cd GUI
+cd SDCardTester/GUI
 make clean && make
 # Output: output/SDCardTester_GUI.bin
 ```
@@ -85,4 +85,4 @@ Based on:
 
 ## License
 
-GNU General Public License v3.0
+GNU General Public License v2.0
