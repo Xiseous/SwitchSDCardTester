@@ -32,7 +32,7 @@ OBJS +=	$(patsubst $(BDKDIR)/%.S, $(BUILDDIR)/$(TARGET)/%.o, \
 		$(call rwildcard, $(BDKDIR), *.S *.c)))
 
 GFX_INC   := '"../$(SOURCEDIR)/gfx/gfx.h"'
-FFCFG_INC := '"../$(BDKDIR)/libs/fatfs/ffconf.h"'
+FFCFG_INC := '"../$(BDKDIR)/fatfs_conf.h"'
 
 ################################################################################
 
