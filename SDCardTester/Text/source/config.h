@@ -37,6 +37,9 @@
 // Progress update frequency
 #define PROGRESS_UPDATE_SECTORS 8192 // Update progress every 4 MB
 
+// Memory addresses (IPL_HEAP_START is in bdk/memory_map.h)
+#define IPL_STACK_TOP 0x83100000
+
 // Hekate configuration structure (minimal version for compatibility)
 typedef struct _hekate_config {
   u32 autoboot;
