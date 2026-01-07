@@ -2,6 +2,11 @@
 
 A Hekate payload that performs comprehensive SD card read testing with sequential and butterfly patterns, measuring latency and detecting bad blocks. Features a touch-enabled LVGL GUI.
 
+> [!IMPORTANT]  
+> The Payload is slow, limited by the Switch's SD Card Reader, for extensive testing you should use h2testw to write files to the full card and then do all the read testing using HDDScan, sequential, butterfly, etc for the best testing methadology.
+> 
+> Payload to be used as a last resort or a quick test when nothing else is available.
+
 ## Features
 
 - **Sequential Read Test**: Reads blocks from start to end
