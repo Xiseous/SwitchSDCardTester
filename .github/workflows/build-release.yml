@@ -27,8 +27,9 @@ jobs:
 
       - name: Extract version from tag
         id: version
+        shell: bash
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             VERSION="${{ github.event.inputs.version }}"
           else
             VERSION="${GITHUB_REF#refs/tags/}"
@@ -36,7 +37,9 @@ jobs:
           # Remove 'v' prefix if present
           VERSION="${VERSION#v}"
           # Parse major.minor.patch
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f2)
+          PATCH=$(echo "$VERSION" | cut -d. -f3)
           echo "major=${MAJOR:-1}" >> $GITHUB_OUTPUT
           echo "minor=${MINOR:-0}" >> $GITHUB_OUTPUT
           echo "patch=${PATCH:-0}" >> $GITHUB_OUTPUT
@@ -75,8 +78,9 @@ jobs:
 
       - name: Get version
         id: version
+        shell: bash
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
           else
             echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
