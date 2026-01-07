@@ -96,7 +96,7 @@ FFCFG_INC := '"fatfs_conf.h"'
 CUSTOMDEFINES := -DIPL_LOAD_ADDR=$(IPL_LOAD_ADDR)
 CUSTOMDEFINES += -DSD_TESTER_VER_MJ=$(VERSION_MAJOR) -DSD_TESTER_VER_MN=$(VERSION_MINOR) -DSD_TESTER_VER_BF=$(VERSION_BUGFX)
 CUSTOMDEFINES += -DGFX_INC=$(GFX_INC) -DFFCFG_INC=$(FFCFG_INC)
-CUSTOMDEFINES += '-DSTRINGIFY(x)=\#x'
+
 
 ARCH := -march=armv4t -mtune=arm7tdmi -mthumb -mthumb-interwork
 CFLAGS = $(ARCH) -Os -nostdlib -ffunction-sections -fdata-sections -fomit-frame-pointer -fno-inline -std=gnu11 -Wall -Wno-missing-braces $(CUSTOMDEFINES)

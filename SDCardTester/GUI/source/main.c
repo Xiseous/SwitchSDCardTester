@@ -294,8 +294,8 @@ static void create_main_menu(void) {
   lv_obj_t *title = lv_label_create(main_win, NULL);
   lv_label_set_recolor(title, true);
   lv_label_set_text(title,
-                    "#00CCFF SD Card Read Tester v" STRINGIFY(
-                        SD_TESTER_VER_MJ) "." STRINGIFY(SD_TESTER_VER_MN) "#");
+                    "#00CCFF SD Card Read Tester v" XSTR(
+                        SD_TESTER_VER_MJ) "." XSTR(SD_TESTER_VER_MN) "#");
 
   // Card info
   sd_card_info_t card_info;
@@ -320,7 +320,7 @@ static void create_main_menu(void) {
   lv_cont_set_layout(btn_cont1, LV_LAYOUT_ROW_M);
   lv_cont_set_fit(btn_cont1, true, true);
 
-  create_btn(btn_cont1, "Sequential 512MB", btn_test_seq_fast);
+  create_btn(btn_cont1, "Sequential 4GB", btn_test_seq_fast);
   create_btn(btn_cont1, "Butterfly 512 iter", btn_test_btf_fast);
   create_btn(btn_cont1, "All Fast", btn_test_all_fast);
 

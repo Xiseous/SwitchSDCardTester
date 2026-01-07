@@ -39,13 +39,13 @@ boot_cfg_t __attribute__((section("._boot_cfg"))) b_cfg;
 
 extern void pivot_stack(u32 stack_top);
 
-// Color definitions
+// Color definitions (optimized for OLED black background)
 #define COLOR_TITLE 0xFF00CCFF
 #define COLOR_HEADER 0xFFFFBA00
 #define COLOR_SUCCESS 0xFF96FF00
 #define COLOR_ERROR 0xFFFF0000
 #define COLOR_WARNING 0xFFFFDD00
-#define COLOR_INFO 0xFFCCCCCC
+#define COLOR_INFO 0xFFFFFFFF
 #define COLOR_HIGHLIGHT 0xFF00FFCC
 
 // Progress callback for sequential test
@@ -101,8 +101,8 @@ static void run_and_display_test(test_mode_t mode) {
 
   switch (mode) {
   case TEST_SEQ_FAST:
-    gfx_printf("%kRunning Fast Sequential Test (512 MB)...%k\n\n",
-               COLOR_WARNING, COLOR_INFO);
+    gfx_printf("%kRunning Fast Sequential Test (4 GB)...%k\n\n", COLOR_WARNING,
+               COLOR_INFO);
     sd_tester_run_sequential(&seq_result, FAST_TEST_SECTORS,
                              seq_progress_callback);
     ran_seq = 1;
@@ -199,7 +199,7 @@ static void show_main_menu(void) {
 
     // Build menu entries
     MenuEntry_t entries[] = {
-        {.name = "Fast Sequential (512 MB)", .optionUnion = 0xFFFFFFFF},
+        {.name = "Fast Sequential (4 GB)", .optionUnion = 0xFFFFFFFF},
         {.name = "Fast Butterfly (512 iter)", .optionUnion = 0xFFFFFFFF},
         {.name = "Full Sequential (Full Card)", .optionUnion = 0xFFFFBA00},
         {.name = "Full Butterfly (Full Card)", .optionUnion = 0xFFFFBA00},

@@ -24,8 +24,8 @@
 #endif
 
 // Test sizes
-#define FAST_TEST_SECTORS (1024 * 1024) // 512 MB (sectors are 512 bytes)
-#define FAST_BUTTERFLY_ITER 512         // 512 iterations for fast butterfly
+#define FAST_TEST_SECTORS (8 * 1024 * 1024) // 4096 MB (sectors are 512 bytes)
+#define FAST_BUTTERFLY_ITER 512             // 512 iterations for fast butterfly
 
 // Block size for reads (128 sectors = 64 KB per read)
 #define BLOCKS_PER_READ 128

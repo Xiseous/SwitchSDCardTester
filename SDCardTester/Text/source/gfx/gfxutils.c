@@ -10,7 +10,7 @@ void gfx_printTopInfo() {
 
   int current_charge_status = 0;
   bq24193_get_property(BQ24193_ChargeStatus, &current_charge_status);
-  SETCOLOR(COLOR_DEFAULT, COLOR_WHITE);
+  SETCOLOR(COLOR_WHITE, COLOR_DARKGREY);
   gfx_con_setpos(0, 0);
   gfx_printf("SDTester %d.%d.%d | Battery: %d%% %c\n", SD_TESTER_VER_MJ,
              SD_TESTER_VER_MN, SD_TESTER_VER_BF, battery >> 8,
@@ -19,10 +19,14 @@ void gfx_printTopInfo() {
 }
 
 void gfx_clearscreen() {
-  gfx_boxGrey(0, 16, 1279, 703, 0x1b);
+  // For gfx_boxGrey: x is vertical (0-1279), y is horizontal (0-719)
+  // Clear main area with black for OLED
+  gfx_boxGrey(16, 0, 1263, 719, 0x00);
 
-  gfx_boxGrey(0, 703, 1279, 719, 0xFF);
-  gfx_boxGrey(0, 0, 1279, 15, 0xFF);
+  // Header bar (top 16 pixels) - dark grey
+  gfx_boxGrey(0, 0, 15, 719, 0x1b);
+  // Footer bar (bottom 16 pixels) - dark grey
+  gfx_boxGrey(1264, 0, 1279, 719, 0x1b);
 
   gfx_printTopInfo();
 }
