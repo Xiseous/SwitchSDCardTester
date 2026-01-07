@@ -1,6 +1,6 @@
 # SD Card Read Tester for Nintendo Switch
 
-A Hekate payload that performs comprehensive SD card read testing with sequential and butterfly patterns, measuring latency and detecting bad blocks.
+A Hekate payload that performs comprehensive SD card read testing with sequential and butterfly patterns, measuring latency and detecting bad blocks. Features a touch-enabled LVGL GUI.
 
 ## Features
 
@@ -8,19 +8,8 @@ A Hekate payload that performs comprehensive SD card read testing with sequentia
 - **Butterfly Read Test**: Alternating low/high sector reads (tests seek performance)
 - **Latency Measurement**: Min/max/average latency per read operation
 - **Bad Block Detection**: Identifies read failures and slow blocks (>5ms)
-- **Fast/Full Modes**: Quick 512MB tests or full card verification
-
-## Versions
-
-### Text Version (`SDCardTester/Text/`)
-Simple text-based interface using `gfx_printf()` and menu system.
-- Lightweight and fast
-- Based on CommonProblemResolver patterns
-
-### GUI Version (`SDCardTester/GUI/`) 
-Full graphical interface using LVGL (LittlevGL).
-- Buttons, progress bars, message boxes
-- Based on Nyx (Hekate's GUI)
+- **Fast/Full Modes**: Quick 4GB tests or full card verification
+- **Touch-enabled GUI**: Modern LVGL interface with progress bars and buttons
 
 ## Building
 
@@ -28,59 +17,38 @@ Full graphical interface using LVGL (LittlevGL).
 - devkitARM (Nintendo Switch homebrew toolchain)
 - Set `DEVKITARM` environment variable
 
-### Build Text Version
+### Build
 ```bash
-cd SDCardTester/Text
-make clean && make
-# Output: output/SDCardTester.bin
-```
-
-### Build GUI Version
-```bash
-cd SDCardTester/GUI
+cd GUI
 make clean && make
 # Output: output/SDCardTester_GUI.bin
 ```
 
 ## Usage
 
-1. Copy the `.bin` file to `/bootloader/payloads/` on your SD card
+1. Copy `SDCardTester.bin` to `/bootloader/payloads/` on your SD card
 2. Boot into Hekate
 3. Select Payloads → SDCardTester
 4. Choose a test mode:
-   - **Fast Sequential (512 MB)** - Quick sequential read test
-   - **Fast Butterfly (512 iter)** - Quick random access test
+   - **Sequential 4GB** - Quick sequential read test
+   - **Butterfly 4K iter** - Quick random access test
    - **Full Sequential** - Test entire card sequentially
    - **Full Butterfly** - Full random access test
-   - **Run All** - Combined tests
+   - **All Fast/Full** - Combined tests
 
-## Test Output
+## Test Results
 
-```
-=== SD Card Read Tester Results ===
-
-Card: 128 GB (UHS-I SDR104)
-
--- Sequential Read Test --
-  Blocks Tested: 1048576
-  Read Errors:   0
-  Slow Blocks:   3 (>5ms)
-  Latency - Min: 142 us, Max: 4521 us, Avg: 1823 us
-
--- Butterfly Read Test --
-  Blocks Tested: 1024
-  Read Errors:   0
-  Slow Blocks:   12 (>5ms)
-  Latency - Min: 234 us, Max: 8934 us, Avg: 3456 us
-
-[PASSED] - SD card passed all read tests!
-```
+After running tests, a results popup will display:
+- Blocks tested and read errors
+- Latency statistics (min/max/avg in microseconds)
+- Slow block count (blocks >5ms response time)
+- Pass/Fail status
 
 ## Credits
 
 Based on:
 - Hekate by CTCaer
-- CommonProblemResolver by Team Neptune
+- Nyx GUI (LVGL implementation)
 - TegraExplorer by SuchMemeManySkill
 
 ## License
