@@ -88,7 +88,7 @@ OBJS += $(addprefix $(BUILDDIR)/$(TARGET)/, \
 )
 
 GFX_INC   := '"display/di.h"'
-FFCFG_INC := '"libs/fatfs/ffconf.h"'
+FFCFG_INC := '"fatfs_conf.h"'
 
 ################################################################################
 
