@@ -68,7 +68,7 @@ OBJS += $(addprefix $(BUILDDIR)/$(TARGET)/, \
 
 # LVGL fonts (basic)
 OBJS += $(addprefix $(BUILDDIR)/$(TARGET)/, \
-	lv_font_builtin.o \
+	lv_font_builtin.o interui_20.o interui_30.o hekate_symbol_20.o hekate_symbol_30.o hekate_symbol_120.o ubuntu_mono.o \
 )
 
 # LVGL misc
