@@ -16,6 +16,7 @@
 
 #include "config.h"
 #include <bdk.h>
+#include <input/touch.h>
 
 #include "gfx/gfx.h"
 #include <libs/lvgl/lvgl.h>
@@ -343,12 +344,33 @@ static void create_main_menu(void) {
   create_btn(main_win, "Exit", btn_exit);
 }
 
-// LVGL display flush callback
+// LVGL display flush callback - rotates from horizontal LVGL to portrait
+// framebuffer
 static void disp_flush(int32_t x1, int32_t y1, int32_t x2, int32_t y2,
                        const lv_color_t *color_p) {
-  // Implement based on Nyx's display driver
-  gfx_set_rect_argb((u32 *)color_p, x2 - x1 + 1, y2 - y1 + 1, x1, y1);
+  // Rotate from LVGL horizontal (1280x720) to framebuffer portrait (720x1280)
+  for (int32_t y = y1; y <= y2; y++) {
+    for (int32_t x = x1; x <= x2; x++) {
+      // Transform: LVGL(x,y) -> FB(y, 1279-x)
+      u32 fb_x = y;
+      u32 fb_y = 1279 - x;
+      gfx_ctxt.fb[fb_x + fb_y * gfx_ctxt.stride] = color_p->full;
+      color_p++;
+    }
+  }
   lv_flush_ready();
+}
+
+// Touch input read callback for LVGL
+static bool touch_read(lv_indev_data_t *data) {
+  touch_event event;
+  touch_poll(&event);
+
+  data->point.x = event.x;
+  data->point.y = event.y;
+  data->state = event.touch ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+
+  return false; // No buffering
 }
 
 void ipl_main(void) {
@@ -373,11 +395,15 @@ void ipl_main(void) {
 
   bpmp_clk_rate_set(BPMP_CLK_DEFAULT_BOOST);
 
+  // Initialize touch hardware
+  touch_power_on();
+
   if (!sd_mounted) {
     gfx_printf("\n\nError: Failed to mount SD card!\n");
     gfx_printf("Press POWER to exit...\n");
     while (!(btn_read() & BTN_POWER))
       ;
+    touch_power_off();
     power_set_state(POWER_OFF_REBOOT);
   }
 
@@ -389,6 +415,13 @@ void ipl_main(void) {
   lv_disp_drv_init(&disp_drv);
   disp_drv.disp_flush = disp_flush;
   lv_disp_drv_register(&disp_drv);
+
+  // Register touch input driver
+  lv_indev_drv_t indev_drv;
+  lv_indev_drv_init(&indev_drv);
+  indev_drv.type = LV_INDEV_TYPE_POINTER;
+  indev_drv.read = touch_read;
+  lv_indev_drv_register(&indev_drv);
 
   // Create main menu
   create_main_menu();
