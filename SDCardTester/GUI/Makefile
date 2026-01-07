@@ -37,7 +37,7 @@ OBJS += $(addprefix $(BUILDDIR)/$(TARGET)/, \
 	mc.o sdram.o minerva.o \
 	sdmmc.o sdmmc_driver.o emmc.o sd.o \
 	bq24193.o max17050.o max7762x.o max77620-rtc.o regulator_5v.o \
-	hw_init.o \
+	hw_init.o exception_handlers.o \
 )
 
 # Utilities from BDK
