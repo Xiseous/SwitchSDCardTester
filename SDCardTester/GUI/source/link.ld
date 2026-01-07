@@ -1,7 +1,7 @@
 ENTRY(_start)
 
 SECTIONS {
-	PROVIDE(__ipl_start = NYX_LOAD_ADDR);
+	PROVIDE(__ipl_start = IPL_LOAD_ADDR);
 	. = __ipl_start;
 	.text : {
 		*(.text._start);
