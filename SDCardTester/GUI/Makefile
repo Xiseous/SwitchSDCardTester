@@ -26,7 +26,7 @@ VPATH += $(dir $(wildcard ./$(LVGLDIR)/)) $(dir $(wildcard ./$(LVGLDIR)/*/)) $(d
 
 # Main source files
 OBJS = $(addprefix $(BUILDDIR)/$(TARGET)/, \
-	start.o main.o sd_tester.o \
+	start.o main.o sd_tester.o gfx.o \
 )
 
 # Hardware from BDK

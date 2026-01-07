@@ -17,6 +17,7 @@
 #include "config.h"
 #include <bdk.h>
 
+#include "gfx/gfx.h"
 #include <libs/lvgl/lvgl.h>
 
 #include "sd_tester.h"
@@ -105,32 +106,41 @@ static void display_results_gui(test_mode_t mode, sd_test_result_t *seq,
   char result_buf[1024];
   char *p = result_buf;
 
-  p += s_printf(p, "#00CCFF SD Card Test Results#\n\n");
+  s_printf(p, "#00CCFF SD Card Test Results#\n\n");
+  p += strlen(p);
 
   // Sequential results
   if (mode == TEST_SEQ_FAST || mode == TEST_SEQ_FULL || mode == TEST_ALL_FAST ||
       mode == TEST_ALL_FULL) {
     u32 avg = sd_tester_get_avg_latency(seq);
-    p += s_printf(p, "#FFBA00 Sequential Read Test#\n");
-    p += s_printf(p, "Blocks: %d | Errors: %d\n", seq->blocks_tested,
-                  seq->read_errors);
-    p += s_printf(p, "Latency: Min %d / Max %d / Avg %d us\n",
-                  seq->min_latency_us == 0xFFFFFFFF ? 0 : seq->min_latency_us,
-                  seq->max_latency_us, avg);
-    p += s_printf(p, "Slow blocks (>5ms): %d\n\n", seq->slow_blocks);
+    s_printf(p, "#FFBA00 Sequential Read Test#\n");
+    p += strlen(p);
+    s_printf(p, "Blocks: %d | Errors: %d\n", seq->blocks_tested,
+             seq->read_errors);
+    p += strlen(p);
+    s_printf(p, "Latency: Min %d / Max %d / Avg %d us\n",
+             seq->min_latency_us == 0xFFFFFFFF ? 0 : seq->min_latency_us,
+             seq->max_latency_us, avg);
+    p += strlen(p);
+    s_printf(p, "Slow blocks (>5ms): %d\n\n", seq->slow_blocks);
+    p += strlen(p);
   }
 
   // Butterfly results
   if (mode == TEST_BTF_FAST || mode == TEST_BTF_FULL || mode == TEST_ALL_FAST ||
       mode == TEST_ALL_FULL) {
     u32 avg = sd_tester_get_avg_latency(btf);
-    p += s_printf(p, "#FFBA00 Butterfly Read Test#\n");
-    p += s_printf(p, "Blocks: %d | Errors: %d\n", btf->blocks_tested,
-                  btf->read_errors);
-    p += s_printf(p, "Latency: Min %d / Max %d / Avg %d us\n",
-                  btf->min_latency_us == 0xFFFFFFFF ? 0 : btf->min_latency_us,
-                  btf->max_latency_us, avg);
-    p += s_printf(p, "Slow blocks (>5ms): %d\n\n", btf->slow_blocks);
+    s_printf(p, "#FFBA00 Butterfly Read Test#\n");
+    p += strlen(p);
+    s_printf(p, "Blocks: %d | Errors: %d\n", btf->blocks_tested,
+             btf->read_errors);
+    p += strlen(p);
+    s_printf(p, "Latency: Min %d / Max %d / Avg %d us\n",
+             btf->min_latency_us == 0xFFFFFFFF ? 0 : btf->min_latency_us,
+             btf->max_latency_us, avg);
+    p += strlen(p);
+    s_printf(p, "Slow blocks (>5ms): %d\n\n", btf->slow_blocks);
+    p += strlen(p);
   }
 
   // Overall result
