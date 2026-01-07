@@ -87,7 +87,7 @@ OBJS += $(addprefix $(BUILDDIR)/$(TARGET)/, \
 	lv_theme.o \
 )
 
-GFX_INC   := '"display/di.h"'
+GFX_INC   := '"../source/gfx/gfx.h"'
 FFCFG_INC := '"fatfs_conf.h"'
 
 ################################################################################
